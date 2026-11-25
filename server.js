@@ -267,6 +267,29 @@ app.get('/api/admin/dashboard', requireAdmin, (req, res) => {
   });
 });
 
+app.get('/api/admin/matrix', requireAdmin, (req, res) => {
+  const year = String(req.query.year || new Date().getFullYear());
+  const months = Array.from({ length: 12 }, (_, i) => `${year}-${String(i + 1).padStart(2, '0')}`);
+
+  const members = db.prepare('SELECT id, name FROM members ORDER BY id ASC').all();
+  const payments = db
+    .prepare('SELECT id, member_id, period, status, receipt_filename, note, uploaded_at FROM payments WHERE period LIKE ?')
+    .all(`${year}-%`);
+
+  const paymentMap = new Map();
+  for (const p of payments) {
+    paymentMap.set(`${p.member_id}:${p.period}`, p);
+  }
+
+  const rows = members.map((m) => ({
+    id: m.id,
+    name: m.name,
+    months: months.map((period) => paymentMap.get(`${m.id}:${period}`) || null),
+  }));
+
+  res.json({ year, months, rows });
+});
+
 app.post('/api/admin/members', requireAdmin, (req, res) => {
   const name = (req.body?.name || '').trim();
   if (!name) {
@@ -354,8 +377,36 @@ app.post('/api/admin/notify', requireAdmin, async (req, res) => {
 
 // --- Frontend Page Routes ---
 
-app.get('/m/:token', (_req, res) => {
-  res.sendFile('member.html', { root: PUBLIC_DIR });
+app.get('/m/:token/manifest.json', (req, res) => {
+  const token = req.params.token;
+  const member = db.prepare('SELECT name FROM members WHERE token = ?').get(token);
+  const title = member ? `YT Aile - ${member.name}` : 'YouTube Aile';
+  res.json({
+    name: title,
+    short_name: 'YT Aile',
+    description: 'YouTube Aile ödeme hatırlatma ve dekont yükleme uygulaması',
+    start_url: `/m/${encodeURIComponent(token)}`,
+    scope: `/m/${encodeURIComponent(token)}`,
+    display: 'standalone',
+    background_color: '#0f0f0f',
+    theme_color: '#ff0033',
+    icons: [
+      {
+        src: '/icon.svg',
+        sizes: 'any',
+        type: 'image/svg+xml',
+        purpose: 'any maskable',
+      },
+    ],
+  });
+});
+
+app.get('/m/:token', (req, res) => {
+  const htmlPath = path.join(PUBLIC_DIR, 'member.html');
+  const html = fs
+    .readFileSync(htmlPath, 'utf8')
+    .replace('href="/manifest.json"', `href="/m/${encodeURIComponent(req.params.token)}/manifest.json"`);
+  res.type('html').send(html);
 });
 
 app.get('/', (_req, res) => {

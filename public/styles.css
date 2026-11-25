@@ -33,6 +33,68 @@ body {
   margin: 0 auto;
 }
 
+.container-wide {
+  max-width: 1280px;
+}
+
+.admin-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+@media (min-width: 980px) {
+  .admin-layout {
+    grid-template-columns: minmax(0, 1.15fr) minmax(360px, 1fr);
+  }
+  .sticky-panel {
+    position: sticky;
+    top: 20px;
+  }
+}
+
+.matrix-wrap {
+  overflow-x: auto;
+}
+
+.matrix-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+}
+
+.matrix-table th,
+.matrix-table td {
+  padding: 7px 4px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+}
+
+.matrix-table th:first-child,
+.matrix-table td:first-child {
+  text-align: left;
+  padding-left: 0;
+  padding-right: 8px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.cell-dot {
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.cell-approved { background: rgba(43, 166, 64, 0.22); color: #4ade80; cursor: pointer; }
+.cell-pending { background: rgba(245, 158, 11, 0.22); color: #fbbf24; cursor: pointer; }
+.cell-rejected { background: rgba(239, 68, 68, 0.22); color: #f87171; cursor: pointer; }
+.cell-unpaid { background: rgba(170, 170, 170, 0.08); color: #666; }
+
 .header {
   display: flex;
   align-items: center;

@@ -46,6 +46,51 @@ function escapeHtml(str) {
     .replace(/>/g, '&gt;');
 }
 
+const MONTH_LABELS = ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'];
+
+function initMatrixYears() {
+  const sel = document.getElementById('matrixYear');
+  if (sel.options.length > 0) return;
+  const currentYear = new Date().getFullYear();
+  for (let y = currentYear + 1; y >= currentYear - 2; y--) {
+    const opt = document.createElement('option');
+    opt.value = String(y);
+    opt.textContent = String(y);
+    if (y === currentYear) opt.selected = true;
+    sel.appendChild(opt);
+  }
+}
+
+async function loadMatrix() {
+  initMatrixYears();
+  const year = document.getElementById('matrixYear').value || String(new Date().getFullYear());
+  const res = await apiFetch(`/api/admin/matrix?year=${encodeURIComponent(year)}`);
+  const data = await res.json();
+  const container = document.getElementById('matrixContainer');
+
+  if (!data.rows || data.rows.length === 0) {
+    container.innerHTML = '<p class="muted">Henüz üye yok.</p>';
+    return;
+  }
+
+  const head = MONTH_LABELS.map((m) => `<th>${m}</th>`).join('');
+  const body = data.rows
+    .map((row) => {
+      const cells = row.months
+        .map((p) => {
+          if (!p) return '<td><span class="cell-dot cell-unpaid">–</span></td>';
+          const icon = p.status === 'approved' ? '✓' : p.status === 'pending' ? '•' : '✕';
+          const cls = `cell-${p.status}`;
+          return `<td><span class="cell-dot ${cls}" title="${escapeHtml(p.period)}" onclick='openReceiptModal(${JSON.stringify(row.name)}, ${JSON.stringify(p)})'>${icon}</span></td>`;
+        })
+        .join('');
+      return `<tr><td>${escapeHtml(row.name)}</td>${cells}</tr>`;
+    })
+    .join('');
+
+  container.innerHTML = `<table class="matrix-table"><thead><tr><th>Üye</th>${head}</tr></thead><tbody>${body}</tbody></table>`;
+}
+
 async function loadDashboard() {
   const periodPicker = document.getElementById('periodPicker');
   if (!periodPicker.value) periodPicker.value = getDefaultPeriod();
@@ -71,6 +116,7 @@ async function loadDashboard() {
   document.getElementById('setIban').value = data.settings.iban_info;
 
   renderMembers(data.members);
+  loadMatrix().catch(() => {});
 }
 
 function renderMembers(members) {
@@ -174,6 +220,7 @@ document.getElementById('approveBtn').addEventListener('click', () => submitRevi
 document.getElementById('rejectBtn').addEventListener('click', () => submitReview('rejected'));
 document.getElementById('logoutBtn').addEventListener('click', logout);
 document.getElementById('periodPicker').addEventListener('change', loadDashboard);
+document.getElementById('matrixYear').addEventListener('change', loadMatrix);
 
 document.getElementById('loginForm').addEventListener('submit', async (e) => {
   e.preventDefault();

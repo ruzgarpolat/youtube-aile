@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
-  <div class="container">
+  <div class="container container-wide">
     <header class="header">
       <div class="brand">
         <span class="brand-badge"></span>
@@ -34,69 +34,90 @@
 
     <!-- Dashboard -->
     <div id="dashboard" class="hidden">
-      <div class="card" style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
-        <div style="display:flex; align-items:center; gap:10px;">
-          <label class="muted" for="periodPicker">Dönem:</label>
-          <input id="periodPicker" class="input" type="month" style="width:auto;" />
-        </div>
-        <button id="notifyAllBtn" class="btn btn-primary btn-sm">Ödemeyenlere Hatırlatma Gönder</button>
-      </div>
-
-      <div id="dashAlert" class="alert hidden"></div>
-
-      <div class="grid-stats">
-        <div class="stat-box">
-          <div class="stat-label">Onaylanan</div>
-          <div id="statApproved" class="stat-value" style="color:#4ade80;">0</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-label">İncelenen</div>
-          <div id="statPending" class="stat-value" style="color:#fbbf24;">0</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-label">Ödemeyen</div>
-          <div id="statUnpaid" class="stat-value" style="color:#f87171;">0</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-label">Toplam Üye</div>
-          <div id="statTotal" class="stat-value">0</div>
-        </div>
-      </div>
-
-      <div class="card">
-        <h2>Arkadaşlar & Dekontlar</h2>
-        <div id="membersList" class="muted">Yükleniyor...</div>
-      </div>
-
-      <div class="card">
-        <h2>Arkadaş Ekle</h2>
-        <form id="addMemberForm" class="form-inline">
-          <input id="newMemberName" class="input" type="text" placeholder="Arkadaşının adı (örn: Ahmet)" style="flex:1; min-width:180px;" required />
-          <button type="submit" class="btn btn-primary">Ekle</button>
-        </form>
-      </div>
-
-      <div class="card">
-        <h2>Ödeme & Bildirim Ayarları</h2>
-        <form id="settingsForm">
-          <div class="form-row">
-            <label class="muted" for="setPaymentDay">Ödeme Günü (Her ayın kaçı? 1-28)</label>
-            <input id="setPaymentDay" class="input" type="number" min="1" max="28" required />
+      <div class="admin-layout">
+        <div class="admin-main">
+          <div class="card" style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <label class="muted" for="periodPicker">Dönem:</label>
+              <input id="periodPicker" class="input" type="month" style="width:auto;" />
+            </div>
+            <button id="notifyAllBtn" class="btn btn-primary btn-sm">Ödemeyenlere Hatırlatma Gönder</button>
           </div>
-          <div class="form-row">
-            <label class="muted" for="setAmount">Kişi Başı Tutar (TL)</label>
-            <input id="setAmount" class="input" type="text" required />
+
+          <div id="dashAlert" class="alert hidden"></div>
+
+          <div class="grid-stats">
+            <div class="stat-box">
+              <div class="stat-label">Onaylanan</div>
+              <div id="statApproved" class="stat-value" style="color:#4ade80;">0</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-label">İncelenen</div>
+              <div id="statPending" class="stat-value" style="color:#fbbf24;">0</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-label">Ödemeyen</div>
+              <div id="statUnpaid" class="stat-value" style="color:#f87171;">0</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-label">Toplam Üye</div>
+              <div id="statTotal" class="stat-value">0</div>
+            </div>
           </div>
-          <div class="form-row">
-            <label class="muted" for="setIban">IBAN ve Alıcı Adı</label>
-            <input id="setIban" class="input" type="text" required />
+
+          <div class="card">
+            <h2>Arkadaşlar & Dekontlar</h2>
+            <div id="membersList" class="muted">Yükleniyor...</div>
           </div>
-          <div class="form-row">
-            <label class="muted" for="setNewPin">Yeni Admin PIN (Değiştirmek istemiyorsan boş bırak)</label>
-            <input id="setNewPin" class="input" type="password" minlength="4" placeholder="En az 4 karakter" />
+
+          <div class="card">
+            <h2>Arkadaş Ekle</h2>
+            <form id="addMemberForm" class="form-inline">
+              <input id="newMemberName" class="input" type="text" placeholder="Arkadaşının adı (örn: Ahmet)" style="flex:1; min-width:180px;" required />
+              <button type="submit" class="btn btn-primary">Ekle</button>
+            </form>
           </div>
-          <button type="submit" class="btn btn-primary">Ayarları Kaydet</button>
-        </form>
+
+          <div class="card">
+            <h2>Ödeme & Bildirim Ayarları</h2>
+            <form id="settingsForm">
+              <div class="form-row">
+                <label class="muted" for="setPaymentDay">Ödeme Günü (Her ayın kaçı? 1-28)</label>
+                <input id="setPaymentDay" class="input" type="number" min="1" max="28" required />
+              </div>
+              <div class="form-row">
+                <label class="muted" for="setAmount">Kişi Başı Tutar (TL)</label>
+                <input id="setAmount" class="input" type="text" required />
+              </div>
+              <div class="form-row">
+                <label class="muted" for="setIban">IBAN ve Alıcı Adı</label>
+                <input id="setIban" class="input" type="text" required />
+              </div>
+              <div class="form-row">
+                <label class="muted" for="setNewPin">Yeni Admin PIN (Değiştirmek istemiyorsan boş bırak)</label>
+                <input id="setNewPin" class="input" type="password" minlength="4" placeholder="En az 4 karakter" />
+              </div>
+              <button type="submit" class="btn btn-primary">Ayarları Kaydet</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Right 12-Month Matrix Panel -->
+        <aside class="sticky-panel">
+          <div class="card">
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:12px;">
+              <h2 style="margin:0;">12 Aylık Ödeme Takibi</h2>
+              <select id="matrixYear" class="input" style="width:auto; padding:6px 10px; font-size:0.85rem;"></select>
+            </div>
+            <div id="matrixContainer" class="matrix-wrap muted">Yükleniyor...</div>
+            <div class="muted" style="font-size:0.76rem; margin-top:10px; display:flex; gap:10px; flex-wrap:wrap;">
+              <span><span class="cell-dot cell-approved" style="width:16px;height:16px;">✓</span> Onaylı</span>
+              <span><span class="cell-dot cell-pending" style="width:16px;height:16px;">•</span> Bekliyor</span>
+              <span><span class="cell-dot cell-rejected" style="width:16px;height:16px;">✕</span> Reddedildi</span>
+              <span><span class="cell-dot cell-unpaid" style="width:16px;height:16px;">–</span> Ödenmedi</span>
+            </div>
+          </div>
+        </aside>
       </div>
     </div>
   </div>
