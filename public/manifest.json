@@ -1,0 +1,17 @@
+{
+  "name": "YouTube Aile Takip",
+  "short_name": "YT Aile",
+  "description": "YouTube Aile ödeme hatırlatma ve dekont yükleme uygulaması",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f0f0f",
+  "theme_color": "#ff0033",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

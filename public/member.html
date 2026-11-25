@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#ff0033" />
+  <title>YouTube Aile - Ödeme & Dekont</title>
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="brand">
+        <span class="brand-badge"></span>
+        <span>YouTube Aile</span>
+      </div>
+      <span id="periodBadge" class="badge badge-unpaid">...</span>
+    </header>
+
+    <div id="errorBox" class="alert alert-error hidden"></div>
+    <div id="mainContent" class="hidden">
+      <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
+          <div>
+            <h2 id="greetingTitle" style="margin-bottom:4px;">Merhaba</h2>
+            <p class="muted" id="paymentDayInfo"></p>
+          </div>
+          <span id="statusBadge" class="badge badge-unpaid">Ödenmedi</span>
+        </div>
+
+        <div class="iban-box">
+          <div>
+            <div class="muted" style="font-size:0.78rem;">Ödenecek Tutar & IBAN</div>
+            <strong id="amountText"></strong>
+            <div id="ibanText" style="font-size:0.9rem; margin-top:2px;"></div>
+          </div>
+          <button id="copyIbanBtn" class="btn btn-sm">Kopyala</button>
+        </div>
+      </div>
+
+      <div class="card" id="pushCard">
+        <h2>Telefon Bildirimleri</h2>
+        <p class="muted" style="margin-bottom:10px;">
+          Ödeme gününden 1 gün önce telefonuna otomatik hatırlatma gelmesi için bildirimleri aç.
+        </p>
+        <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+          <button id="enablePushBtn" class="btn btn-primary btn-sm">Bildirimleri Aç</button>
+          <span id="pushStatus" class="muted"></span>
+        </div>
+        <p class="muted" style="font-size:0.78rem; margin-top:8px;">
+          iPhone kullanıyorsan: Safari'de <b>Paylaş &rarr; Ana Ekrana Ekle</b> yaptıktan sonra uygulamayı ana ekrandan açıp bildirimleri aktifleştir.
+        </p>
+      </div>
+
+      <div class="card">
+        <h2>Dekont Yükle</h2>
+        <div id="uploadAlert" class="alert hidden"></div>
+        <form id="uploadForm">
+          <div class="form-row">
+            <label class="muted" for="receiptInput">Dekont Dosyası (JPG, PNG veya PDF)</label>
+            <input id="receiptInput" class="input" type="file" accept="image/*,application/pdf" required />
+          </div>
+          <div class="form-row">
+            <label class="muted" for="noteInput">Not (İsteğe bağlı)</label>
+            <input id="noteInput" class="input" type="text" placeholder="Örn: Kasım ayı ödemesi" maxlength="300" />
+          </div>
+          <button id="uploadBtn" type="submit" class="btn btn-primary" style="width:100%;">
+            Dekontu Gönder
+          </button>
+        </form>
+      </div>
+
+      <div class="card">
+        <h2>Geçmiş Ödemelerim</h2>
+        <div id="historyList" class="muted">Henüz ödeme kaydı yok.</div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/member.js"></script>
+</body>
+</html>

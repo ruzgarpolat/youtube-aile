@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#ff0033" />
+  <title>YouTube Aile - Kontrol Paneli</title>
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="brand">
+        <span class="brand-badge"></span>
+        <span>YouTube Aile Panel</span>
+      </div>
+      <button id="logoutBtn" class="btn btn-sm hidden">Çıkış</button>
+    </header>
+
+    <!-- Login Card -->
+    <div id="loginCard" class="card" style="max-width:400px; margin:40px auto;">
+      <h2>Yönetici Girişi</h2>
+      <p class="muted" style="margin-bottom:12px;">Kontrol paneline erişmek için PIN kodunu girin (varsayılan: 1234).</p>
+      <div id="loginError" class="alert alert-error hidden"></div>
+      <form id="loginForm">
+        <div class="form-row">
+          <input id="pinInput" class="input" type="password" placeholder="Admin PIN" required />
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%;">Giriş Yap</button>
+      </form>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard" class="hidden">
+      <div class="card" style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <label class="muted" for="periodPicker">Dönem:</label>
+          <input id="periodPicker" class="input" type="month" style="width:auto;" />
+        </div>
+        <button id="notifyAllBtn" class="btn btn-primary btn-sm">Ödemeyenlere Hatırlatma Gönder</button>
+      </div>
+
+      <div id="dashAlert" class="alert hidden"></div>
+
+      <div class="grid-stats">
+        <div class="stat-box">
+          <div class="stat-label">Onaylanan</div>
+          <div id="statApproved" class="stat-value" style="color:#4ade80;">0</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">İncelenen</div>
+          <div id="statPending" class="stat-value" style="color:#fbbf24;">0</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Ödemeyen</div>
+          <div id="statUnpaid" class="stat-value" style="color:#f87171;">0</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Toplam Üye</div>
+          <div id="statTotal" class="stat-value">0</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Arkadaşlar & Dekontlar</h2>
+        <div id="membersList" class="muted">Yükleniyor...</div>
+      </div>
+
+      <div class="card">
+        <h2>Arkadaş Ekle</h2>
+        <form id="addMemberForm" class="form-inline">
+          <input id="newMemberName" class="input" type="text" placeholder="Arkadaşının adı (örn: Ahmet)" style="flex:1; min-width:180px;" required />
+          <button type="submit" class="btn btn-primary">Ekle</button>
+        </form>
+      </div>
+
+      <div class="card">
+        <h2>Ödeme & Bildirim Ayarları</h2>
+        <form id="settingsForm">
+          <div class="form-row">
+            <label class="muted" for="setPaymentDay">Ödeme Günü (Her ayın kaçı? 1-28)</label>
+            <input id="setPaymentDay" class="input" type="number" min="1" max="28" required />
+          </div>
+          <div class="form-row">
+            <label class="muted" for="setAmount">Kişi Başı Tutar (TL)</label>
+            <input id="setAmount" class="input" type="text" required />
+          </div>
+          <div class="form-row">
+            <label class="muted" for="setIban">IBAN ve Alıcı Adı</label>
+            <input id="setIban" class="input" type="text" required />
+          </div>
+          <div class="form-row">
+            <label class="muted" for="setNewPin">Yeni Admin PIN (Değiştirmek istemiyorsan boş bırak)</label>
+            <input id="setNewPin" class="input" type="password" minlength="4" placeholder="En az 4 karakter" />
+          </div>
+          <button type="submit" class="btn btn-primary">Ayarları Kaydet</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Receipt Review Modal -->
+  <div id="receiptModal" class="modal-backdrop">
+    <div class="modal">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h2 id="modalTitle" style="margin:0;">Dekont İnceleme</h2>
+        <button id="closeModalBtn" class="btn btn-sm">Kapat</button>
+      </div>
+      <p id="modalMeta" class="muted" style="margin-top:6px;"></p>
+      <div id="modalPreview"></div>
+      <div class="form-row" style="margin-top:12px;">
+        <input id="reviewNote" class="input" type="text" placeholder="Not / Reddetme sebebi (isteğe bağlı)" />
+      </div>
+      <div style="display:flex; gap:10px; justify-content:flex-end;">
+        <button id="rejectBtn" class="btn btn-red">Reddet</button>
+        <button id="approveBtn" class="btn btn-green">Onayla</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/admin.js"></script>
+</body>
+</html>

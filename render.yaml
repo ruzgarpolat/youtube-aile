@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: youtube-aile
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: ADMIN_PIN
+        value: "1234"
+      - key: NODE_VERSION
+        value: "24"
